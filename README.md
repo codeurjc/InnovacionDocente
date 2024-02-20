@@ -26,27 +26,27 @@ IAs a utilizar:
 
 >**Pregunta 1.2:** *¿En qué consiste una regresión software?*
 
-- **R-Propia-1.1:** Es una pérdida de una funcionalidad existente a consecuencia de un nuevo código añadido en el software
+- **R-Propia-1.2:** Es una pérdida de una funcionalidad existente a consecuencia de un nuevo código añadido en el software
 
-- [**R-Gemini-1.2:**](R-1/R-1.2/R-Gemini-1.2.md): Respuesta larga y detallada
+- [**R-Gemini-1.2**](R-1/R-1.2/R-Gemini-1.2.md): Respuesta larga y detallada
 
 *En el desarrollo de software, una regresión se refiere a la introducción accidental de errores o defectos en el software como resultado de un cambio realizado en el código. Este cambio puede ser una nueva función, una corrección de errores o incluso una simple modificación en la configuración [...]*
 
-- [**R-Copilot-1.2:**](R-1/R-1.2/R-Copilot-1.2.md): Respuesta larga y detallada -> No responde a qué es una regresión, si no qué es un test de regresión
+- [**R-Copilot-1.2**](R-1/R-1.2/R-Copilot-1.2.md): Respuesta larga y detallada -> No responde a qué es una regresión, si no qué es un test de regresión
 
-- [**R-ChatGPT-1.2:**](R-1/R-1.2/R-ChatGPT-1.2.md): Respuesta larga y detallada
+- [**R-ChatGPT-1.2**](R-1/R-1.2/R-ChatGPT-1.2.md): Respuesta larga y detallada
 
 *La regresión de software es un fenómeno que ocurre cuando un cambio en el código o en la configuración de un sistema provoca que una funcionalidad que antes funcionaba correctamente deje de hacerlo. En otras palabras, es la reaparición de errores previamente corregidos o el surgimiento de nuevos problemas como resultado de cambios en el software.*
 
-> **Pregunta 1.3:** *Describe la diferencia entre un test unitario sociable y un test unitario solitario*
+> **Pregunta 1.3** *Describe la diferencia entre un test unitario sociable y un test unitario solitario*
 
-- **R-Propia-1.3:** En un test unitario solitario todas las dependencias son sustituidas por dobles, mientras que en un test solitario sociale, solo se utilizan dobles cuando las dependencias acceden a disco o a otros sistemas vía red.
+- **R-Propia-1.3** En un test unitario solitario todas las dependencias son sustituidas por dobles, mientras que en un test solitario sociale, solo se utilizan dobles cuando las dependencias acceden a disco o a otros sistemas vía red.
 
-- [**R-Gemini-1.3:**](R-1/R-1.3/R-Gemini-1.3.md) Respuesta larga y detallada, pero que contiene errores: no se especifica que en los sociables habría que dejar fuera aquellas dependencias que aumentan el tiempo de ejecución) 
+- [**R-Gemini-1.3**](R-1/R-1.3/R-Gemini-1.3.md) Respuesta larga y detallada, pero que contiene errores: no se especifica que en los sociables habría que dejar fuera aquellas dependencias que aumentan el tiempo de ejecución) 
 
-- [**R-Copilot-1.3:**](R-1/R-1.3/R-Copilot-1.3.md)  R-Copilot-1.3.txt  (respuesta larga y detallada, pero le faltan detalles concretos)
+- [**R-Copilot-1.3**](R-1/R-1.3/R-Copilot-1.3.md)  R-Copilot-1.3.txt  (respuesta larga y detallada, pero le faltan detalles concretos)
 
-- [**R-ChatGPT-1.3:**](R-1/R-1.3/R-ChatGPT-1.3.md) R-Chat GPT-1.3.txt (respuesta larga y detallada, pero contiene errores: no se especifica que en los sociables habría que dejar fuera aquellas dependencias que aumentan el tiempo de ejecución) 
+- [**R-ChatGPT-1.3**](R-1/R-1.3/R-ChatGPT-1.3.md) R-Chat GPT-1.3.txt (respuesta larga y detallada, pero contiene errores: no se especifica que en los sociables habría que dejar fuera aquellas dependencias que aumentan el tiempo de ejecución) 
 
 ## 2. Explicar un código
 
@@ -76,7 +76,7 @@ public class GestorMatricula {
 }
 ```
 
-- [**R-Gemini-2.1:**](R-2/R-2.1/R-Gemini-2.1.md)
+- [**R-Gemini-2.1**](R-2/R-2.1/R-Gemini-2.1.md): Solución generada
 
 > **Pregunta 2.2:** Describe detalladamente lo que hace el siguiente código
 
@@ -101,7 +101,7 @@ public class Twitter {
 }
 ```
 
-- [**R-Gemini-2.2:**](R-2/R-2.2/R-Gemini-2.2.md)
+- [**R-Gemini-2.2**](R-2/R-2.2/R-Gemini-2.2.md): Solución generada
 
 > **Pregunta 2.3:** Describe detalladamente lo que hace el siguiente código
 
@@ -136,7 +136,7 @@ public class Wordle {
 }
 ```
 
-- [**R-Gemini-2.3:**](R-2/R-2.3/R-Gemini-2.3.md)
+- [**R-Gemini-2.3**](R-2/R-2.3/R-Gemini-2.3.md): Solución generada
 
 ## 3. Pregunta cuya respuesta sea un código
 
@@ -184,7 +184,8 @@ public void test(){
        verify(bd).getNotas(fakeID);
 }
 ```
-- [**R-Gemini-3.1:**](R-3/R-3.1/R-Gemini-3.1.md)
+- [**R-Gemini-3.1**](R-3/R-3.1/R-Gemini-3.1.md): Solución generada. No hace comprobaciones sobre las llamadas a métodos del mock.
+
 
 > **Pregunta 3.2:** Desarrolla un test que compruebe que al pasarle al método sendTweet de la clase Twitter un String que representa el tweet, si este tiene no cumple con los requisitos de validación (un tamaño máximo), entonces se lanza una excepción
 
@@ -225,7 +226,8 @@ public void inValidTweetTest() {
 }
 ```
 
-- [**R-Gemini-3.2:**](R-3/R-3.2/R-Gemini-3.2.md)
+- [**R-Gemini-3.2**](R-3/R-3.2/R-Gemini-3.2.md): Solución generada. No hace comprobaciones sobre las llamadas a métodos del mock. Tampoco utiliza assertThrows()
+
 
 > **Pregunta 3.3:** Desarrolla un test que compruebe el funcionamiento de de checkWord de la clase Wordle cuando el usuario introduce las parabras AUREO, CESTO y SESGO, siendo la palabra a adivinar SESGO.
 
@@ -285,5 +287,5 @@ public void wordleTest() {
 }
 ```
 
-- [**R-Gemini-3.3:**](R-3/R-3.3/R-Gemini-3.3.md)
+- [**R-Gemini-3.3**](R-3/R-3.3/R-Gemini-3.3.md): Solución generada. No hace comprobaciones sobre las llamadas a métodos del mock.
 
