@@ -2,6 +2,7 @@ import gradio as gr
 from Results import Results
 
 results = Results()
+
 subjects = [
     "All",
     "Ampliación de Ingeniería del Software",
@@ -19,7 +20,7 @@ with (gr.Blocks() as demo):
     with gr.Row():
         with gr.Column(scale=2):
             subject_filter = gr.Dropdown(label="Subject", choices=subjects, value="All")
-            results_view = gr.Dataframe(value=results.asDataFrame()[['id','question']],height=600,interactive=False)
+            results_view = gr.Dataframe(value=results.withColors(),height=600,interactive=False)
             current_result = gr.Textbox(label="Current result id",value=4)
             
         with gr.Column(scale=4):
@@ -32,7 +33,7 @@ with (gr.Blocks() as demo):
                            lines=3, interactive=True)
                 with gr.Column(scale=4):
                     grade = gr.Dropdown(label="Calificación",
-                                            choices=["Buena", "Regular", "Mala"])
+                                            choices=["-", "Buena", "Regular", "Mala"])
                     save = gr.Button("Guardar",interactive=True, variant="primary")
                 
             
@@ -51,11 +52,8 @@ with (gr.Blocks() as demo):
     
     @subject_filter.change(inputs=[subject_filter], outputs=[results_view])
     def filter_by_subject(choice):
-        if choice == "All":
-            selection = results.asDataFrame()
-        else:
-            selection = results.asDataFrame()[results.asDataFrame()['subject'] == choice]
-        return selection[['id', 'question']]
+        results.applySelection(choice)
+        return gr.update(value=results.withColors())
 
     # On result selection from the list
     
@@ -77,10 +75,10 @@ with (gr.Blocks() as demo):
             gr.update(value=current_result['grade'])
         )
         
-    @save.click(inputs=[current_result, comment, grade], outputs=[comment, grade])
+    @save.click(inputs=[current_result, comment, grade], outputs=[comment, grade, results_view])
     def save_grade(id,comment, grade):
         results.updateResult(id, grade, comment)
         results.save()
-        return gr.update(), gr.update()
+        return gr.update(), gr.update(), gr.update(value=results.withColors())
 
 demo.launch(server_name='0.0.0.0')

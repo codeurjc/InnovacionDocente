@@ -8,11 +8,12 @@ response_map = {
  'No. Me ha contestado de forma errónea': 0
 }
 
+SAVE_PATH="results/Results_graded.xlsx"
+
 class Results():
     def __init__(self):
-        if os.path.exists("results/Results_graded.xlsx"):
-            results_path = "results/Results_graded.xlsx"
-            self.results = pd.read_excel(results_path, dtype = str)
+        if os.path.exists(SAVE_PATH):
+            self.results = pd.read_excel(SAVE_PATH, dtype = str)
             self.results_dict = self.results.to_dict()
         else:
             results_path = 'results/Results.xlsx'
@@ -44,8 +45,33 @@ class Results():
             self.results['date'] = pd.to_datetime(self.results['start_date'], errors='coerce')
             self.results.loc[(self.results["date"]>"2024-03-15") & (self.results["date"]<"2024-04-15"), "subject"] = "Lenguajes de Programación - Haskell"
             self.results.loc[self.results["subject"]=="Lenguajes de Programación", "subject"] = "Lenguajes de Programación - Python"
-            self.results['comment'] = ""
-            self.results['grade'] = ""
+            self.results['comment'] = " "
+            self.results['grade'] = "-"
+        self.selection = self.results
+    
+    def applySelection(self, choice):
+        if choice == "All":
+            self.selection = self.results
+        else:
+            self.selection = self.results[self.results['subject'] == choice]
+    
+    def getSelection(self):
+        return self.selection 
+    
+    def withColors(self):
+        return self.selection[['id','question']].style.apply(self.color_cells, axis=1)
+    
+    def color_cells(self, reduced_row):
+        row = self.getResultById(reduced_row['id'])
+        style=pd.Series()
+        if row['grade'] == '-':
+            style['id'] = 'color: red'
+            style['question'] = 'color: red'
+        else:
+            style['id'] = 'color: green'
+            style['question'] = 'color: green'
+        return style
+    
             
     def asDataFrame(self):
         return self.results
@@ -60,7 +86,7 @@ class Results():
         self.results.loc[index, 'comment'] = comment
         
     def save(self):
-        self.results.to_excel("Results_graded.xlsx", index=False)
+        self.results.to_excel(SAVE_PATH, index=False)
     
     @staticmethod
     def getStudentAnswer(result):

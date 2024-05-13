@@ -5,7 +5,7 @@
 
 En Docker:
 
-Se puede usar la imagen ya construida `maes95/evaluador:v1`
+Se puede usar la imagen ya construida `maes95/evaluador:v2`
 ```
 $ docker build -t evaluador .
 $ docker run -p 7860:7860 -v $PWD/results:/usr/src/app/results evaluador
