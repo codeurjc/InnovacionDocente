@@ -47,16 +47,13 @@ class Results():
             self.results.loc[self.results["subject"]=="Lenguajes de Programación", "subject"] = "Lenguajes de Programación - Python"
             self.results['comment'] = " "
             self.results['grade'] = "-"
-        self.selection = self.results
+        self.applySelection("All")
     
     def applySelection(self, choice):
         if choice == "All":
             self.selection = self.results
         else:
             self.selection = self.results[self.results['subject'] == choice]
-    
-    def getSelection(self):
-        return self.selection 
     
     def withColors(self):
         return self.selection[['id','question']].style.apply(self.color_cells, axis=1)
