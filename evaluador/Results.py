@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 response_map = {
  'Si. Me ha dado la mejor respuesta' : 3,
@@ -8,39 +9,58 @@ response_map = {
 }
 
 class Results():
-    def __init__(self, results_path):
-        results_aux = pd.read_excel(results_path, dtype = str)
-        self.results_dict = results_aux.to_dict()
-        self.results = results_aux.rename(columns={
-            'ID': 'id',
-            'Hora de inicio': 'start_date',
-            'Hora de finalización': 'end_date',
-            'Selecciona la asignatura':'subject',
-            'Selecciona la pregunta': 'question',
-            'Conversación con ChatGPT': 'conversation_ChatGPT',
-            '¿Cuántas preguntas has realizado a ChatGPT para obtener la mejor respuesta?': 'numTries_ChatGPT',
-            'Conversación con Gemini': 'conversation_Gemini',
-            '¿Cuántas preguntas has realizado a Gemini para obtener la mejor respuesta?': 'numTries_Gemini',
-            'Conversación con Copilot': 'conversation_Copilot',
-            '¿Cuántas preguntas has realizado a Copilot para obtener la mejor respuesta?': 'numTries_Copilot',
-            '¿Te ha ayudado ChatGPT a responder a la pregunta?': 'rating_ChatGPT',
-            '¿Te ha ayudado Gemini a responder a la pregunta?': 'rating_Gemini',
-            '¿Te ha ayudado Copilot a responder a la pregunta?': 'rating_Copilot',
-            'Indica tu respuesta a la pregunta ':'final_answer'
-        }).drop(columns=results_aux.columns, errors='ignore')
-        self.results['rating_ChatGPT_reduced'] = self.results['rating_ChatGPT'].apply(lambda rating: response_map[rating])
-        self.results['rating_Gemini_reduced'] = self.results['rating_Gemini'].apply(lambda rating: response_map[rating])
-        self.results['rating_Copilot_reduced'] = self.results['rating_Copilot'].apply(lambda rating: response_map[rating])
+    def __init__(self):
+        if os.path.exists("results/Results_graded.xlsx"):
+            results_path = "results/Results_graded.xlsx"
+            self.results = pd.read_excel(results_path, dtype = str)
+            self.results_dict = self.results.to_dict()
+        else:
+            results_path = 'results/Results.xlsx'
+            results_aux = pd.read_excel(results_path, dtype = str)
+            self.results_dict = results_aux.to_dict()
+            old_columns = results_aux.columns
+            self.results = results_aux.rename(columns={
+                'ID': 'id',
+                'Hora de inicio': 'start_date',
+                'Hora de finalización': 'end_date',
+                'Selecciona la asignatura':'subject',
+                'Selecciona la pregunta': 'question',
+                'Conversación con ChatGPT': 'conversation_ChatGPT',
+                '¿Cuántas preguntas has realizado a ChatGPT para obtener la mejor respuesta?': 'numTries_ChatGPT',
+                'Conversación con Gemini': 'conversation_Gemini',
+                '¿Cuántas preguntas has realizado a Gemini para obtener la mejor respuesta?': 'numTries_Gemini',
+                'Conversación con Copilot': 'conversation_Copilot',
+                '¿Cuántas preguntas has realizado a Copilot para obtener la mejor respuesta?': 'numTries_Copilot',
+                '¿Te ha ayudado ChatGPT a responder a la pregunta?': 'rating_ChatGPT',
+                '¿Te ha ayudado Gemini a responder a la pregunta?': 'rating_Gemini',
+                '¿Te ha ayudado Copilot a responder a la pregunta?': 'rating_Copilot',
+                'Indica tu respuesta a la pregunta ':'final_answer'
+            }).drop(columns=old_columns, errors='ignore')
+            
+            self.results['rating_ChatGPT_reduced'] = self.results['rating_ChatGPT'].apply(lambda rating: response_map[rating])
+            self.results['rating_Gemini_reduced'] = self.results['rating_Gemini'].apply(lambda rating: response_map[rating])
+            self.results['rating_Copilot_reduced'] = self.results['rating_Copilot'].apply(lambda rating: response_map[rating])
         
-        self.results['date'] = pd.to_datetime(self.results['start_date'], errors='coerce')
-        self.results.loc[(self.results["date"]>"2024-03-15") & (self.results["date"]<"2024-04-15"), "subject"] = "Lenguajes de Programación - Haskell"
-        self.results.loc[self.results["subject"]=="Lenguajes de Programación", "subject"] = "Lenguajes de Programación - Python"
+            self.results['date'] = pd.to_datetime(self.results['start_date'], errors='coerce')
+            self.results.loc[(self.results["date"]>"2024-03-15") & (self.results["date"]<"2024-04-15"), "subject"] = "Lenguajes de Programación - Haskell"
+            self.results.loc[self.results["subject"]=="Lenguajes de Programación", "subject"] = "Lenguajes de Programación - Python"
+            self.results['comment'] = ""
+            self.results['grade'] = ""
+            
     def asDataFrame(self):
         return self.results
     
     def getResultById(self, id):
         index = self.results.loc[self.results['id'] == id].index[0]
         return self.results.loc[index]
+    
+    def updateResult(self,id, grade, comment):
+        index = self.results.loc[self.results['id'] == id].index[0]
+        self.results.loc[index, 'grade'] = grade
+        self.results.loc[index, 'comment'] = comment
+        
+    def save(self):
+        self.results.to_excel("Results_graded.xlsx", index=False)
     
     @staticmethod
     def getStudentAnswer(result):
