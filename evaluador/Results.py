@@ -14,6 +14,13 @@ class Results():
     def __init__(self):
         if os.path.exists(SAVE_PATH):
             self.results = pd.read_excel(SAVE_PATH, dtype = str)
+            
+            # JUST IN CASE THE FILE DOESN'T HAVE THE NEW COLUMNS
+            if 'copy_paste' not in self.results.columns:
+                self.results['copy_paste'] = False
+                self.results['misunderstood'] = False
+                self.results['bad_ia_answer'] = False
+            
             self.results_dict = self.results.to_dict()
         else:
             results_path = 'results/Results.xlsx'
@@ -47,6 +54,9 @@ class Results():
             self.results.loc[self.results["subject"]=="Lenguajes de Programación", "subject"] = "Lenguajes de Programación - Python"
             self.results['comment'] = " "
             self.results['grade'] = "-"
+            self.results['copy_paste'] = False
+            self.results['misunderstood'] = False
+            self.results['bad_ia_answer'] = False
         self.applySelection("All")
     
     def applySelection(self, choice):
@@ -77,10 +87,13 @@ class Results():
         index = self.results.loc[self.results['id'] == id].index[0]
         return self.results.loc[index]
     
-    def updateResult(self,id, grade, comment):
+    def updateResult(self,id, grade, comment, copy_paste, misunderstood, bad_ia_answer):
         index = self.results.loc[self.results['id'] == id].index[0]
         self.results.loc[index, 'grade'] = grade
         self.results.loc[index, 'comment'] = comment
+        self.results.loc[index, 'copy_paste'] = copy_paste
+        self.results.loc[index, 'misunderstood'] = misunderstood
+        self.results.loc[index, 'bad_ia_answer'] = bad_ia_answer
         
     def save(self):
         self.results.to_excel(SAVE_PATH, index=False)

@@ -30,10 +30,13 @@ with (gr.Blocks() as demo):
             with gr.Row():
                 with gr.Column(scale=4):
                     comment = gr.Textbox(label="Comentario de la calificación",
-                           lines=3, interactive=True)
+                           lines=10, interactive=True)
                 with gr.Column(scale=4):
                     grade = gr.Dropdown(label="Calificación",
                                             choices=["-", "Buena", "Regular", "Mala"])
+                    copy_paste = gr.Checkbox(label="El estudiante ha copiado y pegado la respuesta de la IA")
+                    misunderstood = gr.Checkbox(label="El estudiante ha malinterpretado la respuesta de la IA")
+                    bad_ia_answer = gr.Checkbox(label="La respuesta de la IA es incorrecta")
                     save = gr.Button("Guardar",interactive=True, variant="primary")
                 
             
@@ -58,7 +61,9 @@ with (gr.Blocks() as demo):
     # On result selection from the list
     
     @results_view.select(inputs=[results_view], outputs=[
-        current_result, final_answer, best_ia_answer, chatgpt_answer, gemini_answer, copilot_answer, comment, grade
+        current_result, final_answer, best_ia_answer, 
+        chatgpt_answer, gemini_answer, copilot_answer, 
+        comment, grade, copy_paste, misunderstood, bad_ia_answer
     ])
     def select_result(event: gr.SelectData, data):
         id = data.iloc[event.index[0]]['id']
@@ -72,13 +77,17 @@ with (gr.Blocks() as demo):
             gr.update(value=Results.getAnswersByIA(current_result, 'Gemini')),
             gr.update(value=Results.getAnswersByIA(current_result, 'Copilot')),
             gr.update(value=current_result['comment']),
-            gr.update(value=current_result['grade'])
+            gr.update(value=current_result['grade']),
+            gr.update(value=current_result['copy_paste']),
+            gr.update(value=current_result['misunderstood']),
+            gr.update(value=current_result['bad_ia_answer'])
         )
         
-    @save.click(inputs=[current_result, comment, grade], outputs=[comment, grade, results_view])
-    def save_grade(id,comment, grade):
-        results.updateResult(id, grade, comment)
+    @save.click(inputs=[current_result, comment, grade, copy_paste, misunderstood, bad_ia_answer], 
+                outputs=[results_view])
+    def save_grade(id,comment, grade, copy_paste, misunderstood, bad_ia_answer):
+        results.updateResult(id, grade, comment, copy_paste, misunderstood, bad_ia_answer)
         results.save()
-        return gr.update(), gr.update(), gr.update(value=results.withColors())
+        return gr.update(value=results.withColors())
 
 demo.launch(server_name='0.0.0.0')
