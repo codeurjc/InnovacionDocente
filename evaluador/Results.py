@@ -20,6 +20,10 @@ class Results():
                 self.results['copy_paste'] = False
                 self.results['misunderstood'] = False
                 self.results['bad_ia_answer'] = False
+            else:
+                self.results['copy_paste'] = self.results['copy_paste'].apply(lambda x: x == 'True')
+                self.results['misunderstood'] = self.results['misunderstood'].apply(lambda x: x == 'True')
+                self.results['bad_ia_answer'] = self.results['bad_ia_answer'].apply(lambda x: x == 'True')
             
             self.results_dict = self.results.to_dict()
         else:
