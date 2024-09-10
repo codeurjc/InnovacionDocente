@@ -1,0 +1,10 @@
+Las categorias (Buena/Regular/Mala) es incompleta
+Checks:
+- El alumno ha copiado/pegado o lo ha puesto con sus palabras
+- El alumno ha respondido mal porque no ha entendido/no ha leido bien la respuesta de la IA
+
+Se han equivocado al responder algunas preguntas (respuesta de la 5 en la 4 ..)
+Describe el código linea por linea, no el funcionamiento general
+En las definiciones/explicaciones (1 y 2), leen mal y su respuesta es lo contrario a lo que dice la IA (que está bien)
+Copian y pegan cosas que muchas veces no tienen sentido
+
