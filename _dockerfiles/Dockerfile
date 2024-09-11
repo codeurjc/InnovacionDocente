@@ -11,4 +11,4 @@ WORKDIR /home/jovyan/work/
 
 CMD ["jupyter-notebook", "--notebook-dir=/home/jovyan/work/", "--ip='0.0.0.0'", "--port=8888","--NotebookApp.token=''","--allow-root"]
 
-# BUILD docker build -f dockerfiles/Dockerfile -t innovacion-docente .
+# BUILD docker build -f _dockerfiles/Dockerfile -t innovacion-docente .
